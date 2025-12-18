@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import authRoutes from "./routes/auth.js";
 
 dotenv.config();
 
@@ -14,12 +15,19 @@ app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
+// auth routes
+app.use("/api", authRoutes);
+
 const PORT = process.env.PORT || 5000;
 const MONGO = process.env.MONGO_URI;
 
 mongoose.connect(MONGO)
   .then(() => {
     console.log("MongoDB connected");
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, () =>
+      console.log(`Server running on port ${PORT}`)
+    );
   })
-  .catch(err => console.error("MongoDB connection error:", err));
+  .catch(err =>
+    console.error("MongoDB connection error:", err)
+  );
